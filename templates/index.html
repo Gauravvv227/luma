@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entertainment Tracker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="/" class="nav-brand">LUMA</a>
+    <div class="nav-links">
+      <a href="/" class="active">Log</a>
+      <a href="/taste">Taste</a>
+      <a href="/recommend">Recommend</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="page-header">
+    <h1>Your Entertainment Log</h1>
+    <p>Track what you watch and listen to. Build your taste profile.</p>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-card violet">
+      <div class="stat-value">{{ entries | selectattr('type', 'equalto', 'movie') | list | length }}</div>
+      <div class="stat-label">Movies</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-value">{{ entries | selectattr('type', 'equalto', 'song') | list | length }}</div>
+      <div class="stat-label">Songs</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-value">{{ entries | length }}</div>
+      <div class="stat-label">Total Logged</div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h2>Log Something New</h2>
+    <form action="/add" method="POST">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Title</label>
+          <input type="text" name="title" placeholder="e.g. Inception, Blinding Lights..." required>
+        </div>
+        <div class="form-group">
+          <label>Type</label>
+          <select name="type">
+            <option value="movie">🎬 Movie</option>
+            <option value="song">🎵 Song</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Genre</label>
+          <input type="text" name="genre" placeholder="e.g. Thriller, Pop...">
+        </div>
+        <div class="form-group full">
+          <label>Rating (1–10)</label>
+          <input type="number" name="rating" placeholder="8" min="1" max="10">
+        </div>
+        <div class="form-group full">
+          <label>Your thoughts</label>
+          <textarea name="notes" placeholder="What made it special?"></textarea>
+        </div>
+      </div>
+      <br>
+      <button type="submit" class="btn btn-primary">Log It →</button>
+    </form>
+  </div>
+
+  <div class="section-header">
+    <h2>My Log</h2>
+    <span class="count-badge">{{ entries | length }} entries</span>
+  </div>
+
+  <div class="filter-tabs">
+    <a href="/" class="filter-tab {% if not request.args.get('type') %}active{% endif %}">All</a>
+    <a href="/?type=movie" class="filter-tab {% if request.args.get('type') == 'movie' %}active{% endif %}">🎬 Movies</a>
+    <a href="/?type=song" class="filter-tab {% if request.args.get('type') == 'song' %}active{% endif %}">🎵 Songs</a>
+  </div>
+
+  <div class="entries-list">
+    {% for entry in entries %}
+    <div class="entry-card {{ entry['type'] }}">
+      <div class="entry-type-icon">
+        {% if entry['type'] == 'movie' %}🎬{% else %}🎵{% endif %}
+      </div>
+      <div class="entry-content">
+        <div class="entry-title">{{ entry['title'] }}</div>
+        <div class="entry-meta">
+          {% if entry['genre'] %}
+          <span class="entry-genre">{{ entry['genre'] }}</span>
+          {% endif %}
+        </div>
+        {% if entry['notes'] %}
+        <div class="entry-notes">"{{ entry['notes'] }}"</div>
+        {% endif %}
+      </div>
+      <div class="entry-rating">{{ entry['rating'] }}<span style="font-size:12px;color:var(--text-muted)">/10</span></div>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <p>Nothing logged yet. Add your first movie or song above.</p>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+</body>
+</html>

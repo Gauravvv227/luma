@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taste Profile — LUMA</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="/" class="nav-brand">LUMA</a>
+    <div class="nav-links">
+      <a href="/">Log</a>
+      <a href="/taste" class="active">Taste</a>
+      <a href="/recommend">Recommend</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="page-header">
+    <h1>Your Taste Profile</h1>
+    <p>What your log says about you.</p>
+  </div>
+
+  <div class="profile-grid">
+    <div class="profile-card">
+      <h3>Genre Breakdown</h3>
+      {% for item in profile['avg_by_genre'] %}
+      <div class="genre-row">
+        <span class="genre-name">{{ item['genre'] }}</span>
+        <div class="genre-stats">
+          <span class="genre-count">{{ item['count'] }} entries</span>
+          <span class="genre-rating">{{ item['avg_rating'] }}</span>
+        </div>
+      </div>
+      {% else %}
+      <p style="color:var(--text-muted);font-size:14px">No genre data yet.</p>
+      {% endfor %}
+    </div>
+
+    <div class="profile-card">
+      <h3>What You Consume</h3>
+      {% for item in profile['type_split'] %}
+      <div class="type-row">
+        <span class="type-name">
+          {% if item['type'] == 'movie' %}🎬{% else %}🎵{% endif %}
+          {{ item['type'] | capitalize }}
+        </span>
+        <span class="type-count" style="color:{% if item['type'] == 'movie' %}var(--violet-light){% else %}var(--amber-light){% endif %}">
+          {{ item['count'] }}
+        </span>
+      </div>
+      {% else %}
+      <p style="color:var(--text-muted);font-size:14px">No data yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <a href="/recommend" class="btn btn-primary">Get AI Recommendations →</a>
+
+</div>
+</body>
+</html>
