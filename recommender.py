@@ -1,9 +1,8 @@
-import json
-
 from groq import Groq
 import os
+import json
+import re
 from dotenv import load_dotenv
-
 from tmdb import get_movie_details
 
 load_dotenv()
@@ -40,7 +39,7 @@ Respond ONLY with a JSON object, no extra text, no markdown, no backticks. Exact
 }}"""
 
     response = client.chat.completions.create(
-        model="meta-llama/llama-4-scout-17b-16e-instruct",
+        model="openai/gpt-oss-20b",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}],
     )
@@ -51,7 +50,7 @@ Respond ONLY with a JSON object, no extra text, no markdown, no backticks. Exact
     print("RAW RESPONSE:", raw)
 
 # Extract JSON from anywhere in the response
-    import re
+    
     json_match = re.search(r'\{.*\}', raw, re.DOTALL)
     if not json_match:
         raise ValueError("No JSON found in response")
