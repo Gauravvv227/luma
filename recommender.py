@@ -1,8 +1,13 @@
-from groq import Groq
 import json
+
+from groq import Groq
+import os
+from dotenv import load_dotenv
+
 from tmdb import get_movie_details
 
-client = Groq(api_key="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")
+load_dotenv()
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def get_recommendations(profile, notes_sample):
     genre_summary = ", ".join([
@@ -35,7 +40,7 @@ Respond ONLY with a JSON object, no extra text, no markdown, no backticks. Exact
 }}"""
 
     response = client.chat.completions.create(
-        model="openai/gpt-oss-20b",
+        model="meta-llama/llama-4-scout-17b-16e-instruct",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}],
     )
