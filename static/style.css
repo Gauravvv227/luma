@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -54,7 +56,7 @@ nav .container {
 }
 
 .nav-brand {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Outfit', sans-serif;
   font-weight: 800;
   font-size: 18px;
   background: var(--gradient);
@@ -95,7 +97,7 @@ nav .container {
 }
 
 .page-header h1 {
-  font-family: 'Moderrat', Moderrat;
+  font-family: 'Moderrat', Boska;
   font-weight: 800;
   font-size: 72px;
   letter-spacing: -0.5px;

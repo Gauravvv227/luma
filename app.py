@@ -12,6 +12,7 @@ def home():
     entries=get_all_entries(type_filter)
     return render_template('index.html', entries=entries)
 
+
 @app.route('/add', methods=['POST'])
 def add():
     title = request.form['title']
